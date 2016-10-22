@@ -9,7 +9,13 @@ function getFile(bmp, cb) {
 
 
 getFile('./non-palette-bitmap.bmp', function (buffer) {
-  buffer.writeInt32LE(ffffff, 54);
+  for(let i = 0; i < buffer.length; i+=5){
+      if(i > 54) {
+          buffer[i] = 0xff;
+      }
+  }
+  fs.writeFile('hex.bmp', buffer);
+
 });
 
 module.exports = getFile;
