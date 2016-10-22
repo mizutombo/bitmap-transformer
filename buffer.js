@@ -1,18 +1,16 @@
 const fs = require('fs');
 
-function getFile(bmp, cb) {
+function getFile(bmp, getCB) {
   fs.readFile(bmp, (err, buffer) => {
-    cb(buffer);
+    getCB(buffer, readHeader(buffer, readCB));
   });
 }
 
-function readHeader(bmp, cb) {
-  fs.readFile(bmp, (err, buffer) => {
-    cb(buffer);
-  });
-  var offsetInfo = getFile(bmp);
-  var buf = offsetInfo.slice(10, 14);
-  buf.readUInt8(0);
+function readHeader(buffer, readCB) {
+    let offsetInfo = buffer.slice(10, 14);
+    let num = offsetInfo.readUInt8(0);
+    console.log(num);
+    readCB(num);
 }
 
 // function transformFile
