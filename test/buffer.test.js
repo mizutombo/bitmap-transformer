@@ -5,6 +5,7 @@ describe('Buffer', () => {
 
     it('returned buffer', done => {
         importedFunc.getFile('non-palette-bitmap.bmp', (buffer) => {
+            console.log(buffer);
             assert(buffer instanceof Buffer);
             // console.log(buffer);
             done();
