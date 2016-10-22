@@ -12,14 +12,11 @@ describe('Buffer', () => {
         });
     });
 
-    // it('retrives offset info from header', done => {
-    //     importedFunc.getFile('non-palette-bitmap.bmp', (buffer) => {
-    //         (buffer) => {
-    //             assert.equal()
-    //         } 
-    //     });
-    // });
-
-});
-
+    it('retrives offset info from header', done => {
+        importedFunc.getFile('non-palette-bitmap.bmp', function getCB(buffer) {
+            function readCB(buffer) {
+                assert.equal(buffer, 54);
+            }
+        })
+    });
 
