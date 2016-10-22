@@ -6,9 +6,10 @@ describe('Buffer', () => {
 
     it('returned buffer', done => {
         getFile('non-palette-bitmap.bmp', buffer => {
-        assert(buffer instanceof Buffer);
-        console.log(buffer);
-        done();
+            assert(buffer instanceof Buffer);
+            console.log(buffer);
+            done();
         });
     });
+    
 });
