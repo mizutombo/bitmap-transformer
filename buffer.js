@@ -2,30 +2,28 @@ const fs = require('fs');
 
 function getFile(bmp, cb) {
   fs.readFile(bmp, (err, buffer) => {
-    cb(buffer, readHeader(buffer, cb));
-  });
+    cb(buffer);
+    var offset = readHeader(buffer);
+    transformFile(offset, buffer);
+  });  
 }
 
-function readHeader(buffer, cb) {
-    let buf = buffer;
-    let offsetInfo = buffer.slice(10, 14);
-    let num = offsetInfo.readUInt8(0);
-    console.log('readHeader cd');
-    cb(transformFile(num, buf, cb));
+function readHeader(buffer) {
+    let offset = buffer.readInt8(10, 4);
+    return offset;
 }
 
-function transformFile(num, buf, cb) {
-  console.log('transformFile cb');
-  for(let i = 0; i < buf.length; i++){
-      if(i > num) {
+function transformFile(offset, buffer) {
+  for(let i = 0; i < buffer.length; i++){
+      if(i > offset) {
         // buf[i] = buf[i] * 0.9;
-        buf[i] = 255 - buf[i];
+        buffer[i] = 255 - buffer[i];
         // buffer[i] = 0xff; //needs bigger i increment
         // buffer[i+1] = 0xff; //same
         // buffer[i + 2] = 0xff; //same
       }
   }
-  cb(writeFile(buf));
+  return buffer;
 }
 
 function writeFile(buf) {
@@ -54,4 +52,4 @@ getFile('./non-palette-bitmap.bmp', function(buffer) {
 // });
 
 
-module.exports = {getFile};
+module.exports = {getFile, readHeader, transformFile};
