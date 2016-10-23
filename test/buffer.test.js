@@ -10,11 +10,15 @@ describe('Buffer', () => {
             let offset = importedFunc.readHeader(buffer);
             assert.equal(offset, 54);
             let bufOriginal = buffer;
-            let transformed = importedFunc.transformFile(offset, buffer);
-            let bufSlice = bufOriginal.slice(offset + 1, 75);
-            let transformSlice = transformed.slice(offset + 1, 75);
+            let bufSlice = bufOriginal.slice(offset + 1, 100);
             console.log(bufSlice);
+            let transformed = importedFunc.transformFile(offset, buffer);
+            let transformSlice = transformed.slice(offset + 1, 100);
             console.log(transformSlice);
+            for(var i = 0; i < transformSlice.length; i++) {
+                transformSlice[i] = 255 - transformSlice[i];
+            }
+            assert.deepEqual(bufSlice, transformSlice);
             done();
         });
     });
