@@ -13,11 +13,13 @@ describe('Buffer', () => {
             let transformed = importedFunc.transformFile(offset, buffer);
             let transformSlice = transformed.slice(offset + 1, 100);
             console.log(transformSlice);
-            for(var i = 0; i < transformSlice.length; i++) {
-                transformSlice[i] = 255 - transformSlice[i];
+            for(var i = 0; i < transformed.length; i++) {
+                transformed[i] = 255 - transformed[i];
             }
-            console.log(transformSlice);
+            console.log(transformed);
             assert.deepEqual(bufSlice, transformSlice);
+            // I don't think the below test is necessary, but I'm open to discussion 
+            // assert.deepEqual(buffer, transformed);
             done();
         });
     });
