@@ -4,30 +4,29 @@ const fs = require('fs');
 
 describe('Buffer', () => {
 
-    it('returned buffer', done => {
-        importedFunc.getFile('non-palette-bitmap.bmp', (err, buffer) => {
-            var header = importedFunc.readHeader(buffer);
-            console.log(header[0]);
-            assert(header[0] instanceof Buffer);
+    it('returned buffer and read header for offset info', done => {
+        importedFunc.getFile('non-palette-bitmap.bmp', buffer => {
+            assert(buffer instanceof Buffer);
+            var offset = importedFunc.readHeader(buffer);
+            assert.equal(offset, 54);
+            importedFunc.transformFile(offset, buffer);
+            
             done();
         });
     });
 });
 
-    // it('read offset info from header', done => {
-    //     fs.readFile('non-palette-bitmap.bmp', (err, buffer) => {
-    //         var buf = importedFunc.readHeader(buffer, null);
-    //         assert.equal(buf, 54);
-    //         done();
-    //     });
-    //     });
+    // it('retrieves offset info from header', done => {
+    //     importedFunc.readHeader(buffer)
+
+    //     }
+    // });
+
+});
 
     // it('retrives offset info from header', done => {
-    //     importedFunc.readHeader('non-palette-bitmap.bmp', (buffer) => {
-    //         // function readCB(buffer) {
-    //             console.log(buffer);
+    //     importedFunc.getFile('non-palette-bitmap.bmp', function(buffer) {
+    //         function (buffer) {
     //             assert.equal(buffer, 54);
-    //         // };
-    //     });
-    //     done();
-    // });
+    //         }
+    //     })
