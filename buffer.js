@@ -31,7 +31,7 @@ function writeFile(buf) {
   fs.writeFile('modifiedBMP.bmp', buf);
 }
 
-// getFile('./non-palette-bitmap.bmp', function() {
-// });
+getFile('./non-palette-bitmap.bmp', function(buffer) {
+});
 
 module.exports = {getFile, readHeader, transformFile};

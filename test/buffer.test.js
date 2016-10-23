@@ -21,13 +21,19 @@ describe('Buffer', () => {
         importedFunc.getFile('non-palette-bitmap.bmp', buffer => {
             let offset = importedFunc.readHeader(buffer);
             let bufSlice = buffer.slice(offset + 1);
+            console.log('bufSlice before');
             console.log(bufSlice);
             let transformed = importedFunc.transformFile(offset, buffer);
             let transformSlice = transformed.slice(offset + 1);
+            console.log('transform before');
             console.log(transformSlice);
-            // for(let i = offset + 1; i < transformSlice.length; i++) {
+            // for(let i = 0; i < transformSlice.length; i++) {
             //     transformSlice[i] = 255 - transformSlice[i];
             // }
+            console.log('bufSlice after');
+            console.log(bufSlice);
+            console.log('transform after');
+            console.log(transformSlice);
             assert.deepEqual(bufSlice, transformSlice);
             done();
         });
