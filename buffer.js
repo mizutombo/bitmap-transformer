@@ -12,7 +12,6 @@ function readHeader(buffer) {
 }
 
 function transformFile(offset, buffer) {
-  buffer;
   for(let i = 0; i < buffer.length; i++){
       if(i > offset) {
         buffer[i] = 255 - buffer[i];
