@@ -9,8 +9,7 @@ describe('Buffer', () => {
             assert(buffer instanceof Buffer);
             let offset = importedFunc.readHeader(buffer);
             assert.equal(offset, 54);
-            let bufOriginal = buffer;
-            let bufSlice = bufOriginal.slice(offset + 1, 100);
+            let bufSlice = buffer.slice(offset + 1, 100);
             console.log(bufSlice);
             let transformed = importedFunc.transformFile(offset, buffer);
             let transformSlice = transformed.slice(offset + 1, 100);
