@@ -7,10 +7,18 @@ describe('Buffer', () => {
     it('returned buffer and read header for offset info', done => {
         importedFunc.getFile('non-palette-bitmap.bmp', buffer => {
             assert(buffer instanceof Buffer);
-            var offset = importedFunc.readHeader(buffer);
+            let offset = importedFunc.readHeader(buffer);
             assert.equal(offset, 54);
-            importedFunc.transformFile(offset, buffer);
-            
+            let bufSlice = buffer.slice(offset + 1, 100);
+            console.log(bufSlice);
+            let transformed = importedFunc.transformFile(offset, buffer);
+            let transformSlice = transformed.slice(offset + 1, 100);
+            console.log(transformSlice);
+            for(var i = 0; i < transformSlice.length; i++) {
+                transformSlice[i] = 255 - transformSlice[i];
+            }
+            console.log(transformSlice);
+            assert.deepEqual(bufSlice, transformSlice);
             done();
         });
     });
