@@ -15,16 +15,17 @@ function readHeader(buffer) {
 }
 
 function transformFile(offset, buffer) {
-  for(let i = 0; i < buffer.length; i++){
+  let transformedBuffer = buffer;
+  for(let i = 0; i < transformedBuffer.length; i++){
       if(i > offset) {
         // buffer[i] = buffer[i] * 0.9;
-        buffer[i] = 255 - buffer[i];
+        transformedBuffer[i] = 255 - transformedBuffer[i];
         // buffer[i] = 0xff; //needs bigger i increment
         // buffer[i+1] = 0xff; //same
         // buffer[i + 2] = 0xff; //same
       }
   }
-  return buffer;
+  return transformedBuffer;
 }
 
 function writeFile(buf) {
