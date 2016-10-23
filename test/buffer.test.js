@@ -3,31 +3,24 @@ const importedFunc = require('../buffer');
 const fs = require('fs');
 
 describe('Buffer', () => {
-
-    it('returned buffer', done => {
-        importedFunc.getFile('non-palette-bitmap.bmp', (err, buffer) => {
-            var header = importedFunc.readHeader(buffer);
-            console.log(header[0]);
-            assert(header[0] instanceof Buffer);
+    it('returned buffer, read header for offset info, and transformed bitmap', done => {
+        importedFunc.getFile('non-palette-bitmap.bmp', buffer => {
+            assert(buffer instanceof Buffer);
+            let offset = importedFunc.readHeader(buffer);
+            assert.equal(offset, 54);
+            let bufSlice = buffer.slice(offset + 1, 100);
+            console.log(bufSlice);
+            let transformed = importedFunc.transformFile(offset, buffer);
+            let transformSlice = transformed.slice(offset + 1, 100);
+            console.log(transformSlice);
+            for(var i = 0; i < transformed.length; i++) {
+                transformed[i] = 255 - transformed[i];
+            }
+            console.log(transformed);
+            assert.deepEqual(bufSlice, transformSlice);
+            // I don't think the below test is necessary, but I'm open to discussion 
+            // assert.deepEqual(buffer, transformed);
             done();
         });
     });
 });
-
-    // it('read offset info from header', done => {
-    //     fs.readFile('non-palette-bitmap.bmp', (err, buffer) => {
-    //         var buf = importedFunc.readHeader(buffer, null);
-    //         assert.equal(buf, 54);
-    //         done();
-    //     });
-    //     });
-
-    // it('retrives offset info from header', done => {
-    //     importedFunc.readHeader('non-palette-bitmap.bmp', (buffer) => {
-    //         // function readCB(buffer) {
-    //             console.log(buffer);
-    //             assert.equal(buffer, 54);
-    //         // };
-    //     });
-    //     done();
-    // });

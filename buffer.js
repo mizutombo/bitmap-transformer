@@ -2,41 +2,36 @@ const fs = require('fs');
 
 function getFile(bmp, cb) {
   fs.readFile(bmp, (err, buffer) => {
-    cb(buffer, readHeader(buffer));
-  });
+    cb(buffer);
+    var offset = readHeader(buffer);
+    transformFile(offset, buffer);
+    writeFile(buffer);
+  });  
 }
 
 function readHeader(buffer) {
-    let array = [];
-    let buf = buffer;
-    let offsetInfo = buffer.slice(10, 14);
-    let num = offsetInfo.readUInt8(0);
-    array.push(buf);
-    array.push(num);
-    return array;
-    // cb(transformFile(num, buf, cb));
+    let offset = buffer.readInt8(10, 4);
+    return offset;
 }
 
-function transformFile(num, buf, cb) {
-  for(let i = 0; i < buf.length; i++){
-      if(i > num) {
-        // buf[i] = buf[i] * 0.9;
-        buf[i] = 255 - buf[i];
+function transformFile(offset, buffer) {
+  for(let i = 0; i < buffer.length; i++){
+      if(i > offset) {
+        // buffer[i] = buffer[i] * 0.9;
+        buffer[i] = 255 - buffer[i];
         // buffer[i] = 0xff; //needs bigger i increment
         // buffer[i+1] = 0xff; //same
         // buffer[i + 2] = 0xff; //same
       }
   }
-  cb(writeFile(buf));
+  return buffer;
 }
 
 function writeFile(buf) {
   fs.writeFile('modifiedBMP.bmp', buf);
 }
 
-// FUNCTION CALL FOR TESTING BUFFER.JS STANDALONE
-// getFile('./non-palette-bitmap.bmp', function(buffer) {
-//   buffer;
+// getFile('./non-palette-bitmap.bmp', function() {
 // });
 
-module.exports = {getFile, readHeader, transformFile, writeFile};
+module.exports = {getFile, readHeader, transformFile};
