@@ -18,6 +18,7 @@ describe('Buffer', () => {
             for(var i = 0; i < transformSlice.length; i++) {
                 transformSlice[i] = 255 - transformSlice[i];
             }
+            console.log(transformSlice);
             assert.deepEqual(bufSlice, transformSlice);
             done();
         });
