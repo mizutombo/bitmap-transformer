@@ -3,8 +3,7 @@ const importedFunc = require('../buffer');
 const fs = require('fs');
 
 describe('Buffer', () => {
-
-    it('returned buffer and read header for offset info', done => {
+    it('returned buffer, read header for offset info, and transformed bitmap', done => {
         importedFunc.getFile('non-palette-bitmap.bmp', buffer => {
             assert(buffer instanceof Buffer);
             let offset = importedFunc.readHeader(buffer);
@@ -23,18 +22,3 @@ describe('Buffer', () => {
         });
     });
 });
-
-    // it('retrieves offset info from header', done => {
-    //     importedFunc.readHeader(buffer)
-
-    //     }
-    // });
-
-});
-
-    // it('retrives offset info from header', done => {
-    //     importedFunc.getFile('non-palette-bitmap.bmp', function(buffer) {
-    //         function (buffer) {
-    //             assert.equal(buffer, 54);
-    //         }
-    //     })
