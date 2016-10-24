@@ -2,12 +2,14 @@
   "name": "bitmap-transformer",
   "version": "1.0.0",
   "description": "",
-  "main": "buffer.js",
+  "main": "index.js",
   "directories": {
     "test": "test"
   },
   "scripts": {
-    "test": "mocha"
+    "test": "mocha",
+    "test:watch": "npm test -w",
+    "lint": "eslint ."
   },
   "repository": {
     "type": "git",
