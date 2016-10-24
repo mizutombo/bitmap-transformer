@@ -1,6 +1,6 @@
 const fs = require('fs');
 
-function getFile(bmp, cb) {
+function transformBitmap(bmp, cb) {
   fs.readFile(bmp, (err, buffer) => {
     cb(err, buffer);
   });  
@@ -11,7 +11,7 @@ function readHeader(buffer) {
     return offset;
 }
 
-function transformFile(offset, buffer) {
+function changePixels(offset, buffer) {
   for(let i = 0; i < buffer.length; i++){
       if(i > offset) {
         buffer[i] = 255 - buffer[i];
@@ -20,10 +20,10 @@ function transformFile(offset, buffer) {
   return buffer;
 }
 
-function writeFile(buffer, cb) {
+function createNewBitmap(buffer, cb) {
   fs.writeFile('modifiedBMP.bmp', buffer, (err) => {
     cb(err);
   });
 }
 
-module.exports = {getFile, readHeader, transformFile, writeFile};
+module.exports = {transformBitmap, readHeader, changePixels, createNewBitmap};

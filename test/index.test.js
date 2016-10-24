@@ -3,7 +3,7 @@ const importedFunc = require('../index');
 
 describe('Buffer', () => {
      it('returned buffer', done => {
-        importedFunc.getFile('non-palette-bitmap.bmp', (err, buffer) => {
+        importedFunc.transformBitmap('non-palette-bitmap.bmp', (err, buffer) => {
             if (err) return done(err);
             assert(buffer instanceof Buffer);
             done();
@@ -11,7 +11,7 @@ describe('Buffer', () => {
      });
 
     it('read header for offset info', done => {
-        importedFunc.getFile('non-palette-bitmap.bmp', (err, buffer) => {
+        importedFunc.transformBitmap('non-palette-bitmap.bmp', (err, buffer) => {
             if (err) return done(err);
             let offset = importedFunc.readHeader(buffer);
             assert.equal(offset, 54);
@@ -20,11 +20,11 @@ describe('Buffer', () => {
     });
 
     it('transformed bitmap', done => {
-        importedFunc.getFile('non-palette-bitmap.bmp', (err, buffer) => {
+        importedFunc.transformBitmap('non-palette-bitmap.bmp', (err, buffer) => {
             if (err) return done(err);
             let offset = importedFunc.readHeader(buffer);
             let bufSlice = Buffer.from(buffer);
-            let transformed = importedFunc.transformFile(offset, buffer);
+            let transformed = importedFunc.changePixels(offset, buffer);
             let transformSlice = Buffer.from(transformed);
             for(let i = offset + 1; i < transformSlice.length; i++) {
                 transformSlice[i] = 255 - transformSlice[i];
@@ -35,11 +35,11 @@ describe('Buffer', () => {
     });
 
     it('wrote file', done => {
-        importedFunc.getFile('non-palette-bitmap.bmp', (err, buffer) => {
+        importedFunc.transformBitmap('non-palette-bitmap.bmp', (err, buffer) => {
             if (err) return done(err);
             let offset = importedFunc.readHeader(buffer);
-            let transformed = importedFunc.transformFile(offset, buffer);
-            importedFunc.writeFile(transformed, (err) => {
+            let transformed = importedFunc.changePixels(offset, buffer);
+            importedFunc.createNewBitmap(transformed, (err) => {
                 if (err) return done(err);
             });
             done();
