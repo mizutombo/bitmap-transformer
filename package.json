@@ -7,7 +7,11 @@
     "test": "test"
   },
   "scripts": {
-    "test": "mocha"
+    "lint": "eslint **/*.js",
+    "pretest": "npm run lint",
+    "test": "mocha",
+    "watch": "npm run test -- -w",
+    "start": "node ./index.js"
   },
   "repository": {
     "type": "git",

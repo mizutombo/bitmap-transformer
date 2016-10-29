@@ -5,7 +5,7 @@ chai.use(require('chai-fs'));
 const bmpFunctions = require('../index');
 
 describe('Buffer', () => {
-     it('return buffer', done => {
+     it('returned buffer', done => {
         bmpFunctions.transformBitmap('non-palette-bitmap.bmp', (err, buffer) => {
             if (err) return done(err);
             assert(buffer instanceof Buffer);
@@ -22,16 +22,16 @@ describe('Buffer', () => {
         });
     });
 
-    it('test transformed bitmap by transforming and then reversing transformation', done => {
+    it('transformed bitmap properly', done => {
         bmpFunctions.transformBitmap('non-palette-bitmap.bmp', (err, buffer) => {
             if (err) return done(err);
             let offset = bmpFunctions.readHeader(buffer);
             let originalBuffer = bmpFunctions.createBuffer(buffer);
-            let transformedBuffer = bmpFunctions.alterBitmapPixels(offset, buffer);
-            for(let i = offset + 1; i < transformedBuffer.length; i++) {
-                transformedBuffer[i] = 255 - transformedBuffer[i];
+            let alteredBuffer = bmpFunctions.alterBitmapPixels(offset, buffer);
+            for(let i = offset + 1; i < alteredBuffer.length; i++) {
+                alteredBuffer[i] = 255 - alteredBuffer[i];
             }
-            assert.deepEqual(transformedBuffer, originalBuffer);
+            assert.deepEqual(alteredBuffer, originalBuffer);
             done();
         });
     });
