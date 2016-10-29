@@ -11,19 +11,25 @@ function readHeader(buffer) {
     return offset;
 }
 
-function changePixels(offset, buffer) {
-  for(let i = 0; i < buffer.length; i++){
-      if(i > offset) {
-        buffer[i] = 255 - buffer[i];
-      }
-  }
-  return buffer;
+function createBuffer(buffer) {
+  let newBuffer = Buffer.from(buffer);
+  return newBuffer;
 }
 
-function createNewBitmap(buffer, cb) {
+function alterBitmapPixels(offset, buffer) {
+  let bufferToBeAltered = createBuffer(buffer);
+  for(let i = 0; i < bufferToBeAltered.length; i++) {
+    if(i > offset) {
+      bufferToBeAltered[i] = 255 - bufferToBeAltered[i];
+    }
+  }
+  return bufferToBeAltered;
+}
+
+function writeNewBitmap(buffer, cb) {
   fs.writeFile('modifiedBMP.bmp', buffer, (err) => {
     cb(err);
   });
 }
 
-module.exports = {transformBitmap, readHeader, changePixels, createNewBitmap};
+module.exports = {transformBitmap, readHeader, createBuffer, alterBitmapPixels, writeNewBitmap};

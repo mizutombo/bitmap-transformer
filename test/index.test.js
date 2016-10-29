@@ -1,9 +1,12 @@
 const assert = require('assert');
-const importedFunc = require('../index');
+const chai = require('chai');
+const chaiAssert = require('chai').assert;
+chai.use(require('chai-fs'));
+const bmpFunctions = require('../index');
 
 describe('Buffer', () => {
-     it('returned buffer', done => {
-        importedFunc.transformBitmap('non-palette-bitmap.bmp', (err, buffer) => {
+     it('return buffer', done => {
+        bmpFunctions.transformBitmap('non-palette-bitmap.bmp', (err, buffer) => {
             if (err) return done(err);
             assert(buffer instanceof Buffer);
             done();
@@ -11,37 +14,37 @@ describe('Buffer', () => {
      });
 
     it('read header for offset info', done => {
-        importedFunc.transformBitmap('non-palette-bitmap.bmp', (err, buffer) => {
+        bmpFunctions.transformBitmap('non-palette-bitmap.bmp', (err, buffer) => {
             if (err) return done(err);
-            let offset = importedFunc.readHeader(buffer);
+            let offset = bmpFunctions.readHeader(buffer);
             assert.equal(offset, 54);
             done();
         });
     });
 
-    it('transformed bitmap', done => {
-        importedFunc.transformBitmap('non-palette-bitmap.bmp', (err, buffer) => {
+    it('test transformed bitmap by transforming and then reversing transformation', done => {
+        bmpFunctions.transformBitmap('non-palette-bitmap.bmp', (err, buffer) => {
             if (err) return done(err);
-            let offset = importedFunc.readHeader(buffer);
-            let bufSlice = Buffer.from(buffer);
-            let transformed = importedFunc.changePixels(offset, buffer);
-            let transformSlice = Buffer.from(transformed);
-            for(let i = offset + 1; i < transformSlice.length; i++) {
-                transformSlice[i] = 255 - transformSlice[i];
+            let offset = bmpFunctions.readHeader(buffer);
+            let originalBuffer = bmpFunctions.createBuffer(buffer);
+            let transformedBuffer = bmpFunctions.alterBitmapPixels(offset, buffer);
+            for(let i = offset + 1; i < transformedBuffer.length; i++) {
+                transformedBuffer[i] = 255 - transformedBuffer[i];
             }
-            assert.deepEqual(transformSlice, bufSlice);
+            assert.deepEqual(transformedBuffer, originalBuffer);
             done();
         });
     });
 
     it('wrote file', done => {
-        importedFunc.transformBitmap('non-palette-bitmap.bmp', (err, buffer) => {
+        bmpFunctions.transformBitmap('non-palette-bitmap.bmp', (err, buffer) => {
             if (err) return done(err);
-            let offset = importedFunc.readHeader(buffer);
-            let transformed = importedFunc.changePixels(offset, buffer);
-            importedFunc.createNewBitmap(transformed, (err) => {
+            let offset = bmpFunctions.readHeader(buffer);
+            let alteredBitmap = bmpFunctions.alterBitmapPixels(offset, buffer);
+            bmpFunctions.writeNewBitmap(alteredBitmap, (err) => {
                 if (err) return done(err);
             });
+            chaiAssert.isFile('modifiedBMP.bmp');
             done();
         }); 
     });    
