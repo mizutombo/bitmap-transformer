@@ -43,6 +43,6 @@ describe('Buffer', () => {
                 if (err) return done(err);
             });
             done();
-        }); 
-    });    
+        });
+    });
 });

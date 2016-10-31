@@ -3,12 +3,15 @@
   "version": "1.0.0",
   "description": "",
   "main": "buffer.js",
-  "directories": {
-    "test": "test"
-  },
   "scripts": {
-    "test": "mocha"
-  },
+      "start": "npm run test && node index.js",
+      "pretest": "npm run lint",
+      "test": "npm run test:run",
+      "test:run": "mocha",
+      "test:watch": "npm run test:run -- -w"
+      "lint": "eslint ."
+    },
+
   "repository": {
     "type": "git",
     "url": "git+https://github.com/mizutombo/bitmap-transformer.git"

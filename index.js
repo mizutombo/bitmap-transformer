@@ -3,7 +3,7 @@ const fs = require('fs');
 function transformBitmap(bmp, cb) {
   fs.readFile(bmp, (err, buffer) => {
     cb(err, buffer);
-  });  
+  });
 }
 
 function readHeader(buffer) {
